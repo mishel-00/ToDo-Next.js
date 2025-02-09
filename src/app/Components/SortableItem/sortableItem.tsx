@@ -1,8 +1,9 @@
 import React from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+
 import { Badge, BadgeVariant } from '../ui/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 
 
 interface Task {
@@ -45,14 +46,14 @@ function SortableItem({ id, task }: SortableItemProps) {
     }
   };
 
-  const formatDate = (date: Date | null | undefined) => {
-    if (!date) return null;
-    return new Date(date).toLocaleDateString('es-ES', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric'
-    });
-  };
+  const formatDate = (date: Date | null | undefined) =>
+    date
+      ? new Date(date).toLocaleDateString("es-ES", {
+          year: "numeric",
+          month: "short",
+          day: "numeric",
+        })
+      : "";
 
   return (
     <Card 
@@ -60,12 +61,11 @@ function SortableItem({ id, task }: SortableItemProps) {
       style={style} 
       {...attributes} 
       {...listeners}
-      className="mb-3"
     >
       <CardHeader>
         <CardTitle>{task.title}</CardTitle>
       </CardHeader>
-      <CardContent className="space-y-2">
+      <CardContent >
         {task.description && (
           <p className="text-sm text-muted-foreground">
             {task.description}

@@ -12,8 +12,8 @@ export async function obtenerTodasTareas() {
     })
     return { success: true, data: tasks }
   } catch (error) {
-    console.error("Error fetching tasks:", error)
-    return { success: false, error: "Failed to fetch tasks" }
+    console.error("Error fetching obtenerTodasTareas:", error)
+    return { success: false, error: "Fail to FETCH" }
   }
 }
 
@@ -34,8 +34,8 @@ export async function obtenerTareasOrdenadasPorProyecto() {
 
     return { success: true, data: projectStats }
   } catch (error) {
-    console.error("Error fetching project stats:", error)
-    return { success: false, error: "Failed to fetch project stats" }
+    console.error("Error fetching obtenerTareasOrdenadasPorProyecto:", error)
+    return { success: false, error: "Fail to FETCH" }
   }
 }
 
@@ -46,8 +46,8 @@ export async function obtenerProyectos(projectId: number) {
     })
     return { success: true, data: tasks }
   } catch (error) {
-    console.error("Error fetching project tasks:", error)
-    return { success: false, error: "Failed to fetch project tasks" }
+    console.error("Error fetching obtenerProyectos:", error)
+    return { success: false, error: "Fail to FETCH" }
   }
 }
 
@@ -58,8 +58,8 @@ export async function tareasStatus(status: string) {
     })
     return { success: true, data: tasks }
   } catch (error) {
-    console.error("Error fetching tasks by status:", error)
-    return { success: false, error: "Failed to fetch tasks by status" }
+    console.error("Error fetch tareaStatus:", error)
+    return { success: false, error: "Fail to FETCH" }
   }
 }
 
@@ -76,8 +76,8 @@ export async function addTarea(formData: FormData) {
     revalidatePath("/tasks")
     return { success: true, data: newTask }
   } catch (error) {
-    console.error("Error adding task:", error)
-    return { success: false, error: "Failed to add task" }
+    console.error("Error:", error)
+    return { success: false, error: "Error al añadir la tarea" }
   }
 }
 
@@ -94,8 +94,8 @@ export async function modificarStatusTarea(formData: FormData) {
     revalidatePath("/tasks")
     return { success: true, data: updatedTask }
   } catch (error) {
-    console.error("Error updating task status:", error)
-    return { success: false, error: "Failed to update task status" }
+    console.error("Error:", error)
+    return { success: false, error: "Error al actualizar el estado de la tarea" }
   }
 }
 
@@ -108,9 +108,9 @@ export async function eliminarTarea(formData: FormData) {
     })
 
     revalidatePath("/tasks")
-    return { success: true, message: "Task deleted successfully" }
+    return { success: true, message: "Tarea eliminada" }
   } catch (error) {
     console.error("Error deleting task:", error)
-    return { success: false, error: "Failed to delete task" }
+    return { success: false, error: "Ha habido un error para eliminar la tarea" }
   }
 }

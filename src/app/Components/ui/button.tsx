@@ -1,6 +1,12 @@
 import { cn } from "@/lib/utils";
+import { ReactNode, ButtonHTMLAttributes } from "react";
 
-export function Button({ children, className, ...props }) {
+interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+  children: ReactNode;
+  className?: string;
+}
+
+export function Button({ children, className, ...props }: ButtonProps) {
   return (
     <button
       className={cn(
