@@ -1,35 +1,22 @@
-import React from 'react';
-import { useSortable } from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
+'use client';
 
-import { Badge, BadgeVariant } from '../ui/badge';
-import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
-
-
-interface Task {
-  id: number;
-  title: string;
-  description?: string;
-  priority?: string | null;
-  tags?: string;
-  startDate?: Date | null;
-  dueDate?: Date | null;
-}
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
+import { Task } from "../types";
+import { X, Calendar } from "lucide-react";
 
 interface SortableItemProps {
   id: number;
   task: Task;
+  containerId: string;
+  onDelete: (id: number) => void;
 }
 
-function SortableItem({ id, task }: SortableItemProps) {
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-    isDragging
-  } = useSortable({ id });
+export default function SortableItem({ id, task, containerId, onDelete }: SortableItemProps) {
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
+    id,
+    data: { sortable: { containerId } },
+  });
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -37,74 +24,44 @@ function SortableItem({ id, task }: SortableItemProps) {
     opacity: isDragging ? 0.5 : 1,
   };
 
-  const getPriorityVariant = (priority: string | null | undefined): BadgeVariant => {
-    switch (priority?.toLowerCase()) {
-      case 'alta': return 'destructive';
-      case 'media': return 'warning';
-      case 'baja': return 'secondary';
-      default: return 'secondary';
-    }
-  };
-
-  const formatDate = (date: Date | null | undefined) =>
-    date
-      ? new Date(date).toLocaleDateString("es-ES", {
-          year: "numeric",
-          month: "short",
-          day: "numeric",
-        })
-      : "";
-
   return (
-    <Card 
-      ref={setNodeRef} 
-      style={style} 
-      {...attributes} 
+    <div
+      ref={setNodeRef}
+      {...attributes}
       {...listeners}
+      style={style}
+      className="p-3 border rounded-lg shadow bg-gray-100 relative dark:bg-gray-800 dark:border-gray-600"
     >
-      <CardHeader>
-        <CardTitle>{task.title}</CardTitle>
-      </CardHeader>
-      <CardContent >
-        {task.description && (
-          <p className="text-sm text-muted-foreground">
-            {task.description}
-          </p>
-        )}
-        
-        <div className="flex flex-wrap gap-2">
-        <Badge variant={getPriorityVariant(task.priority)}>
-           <span>{task.priority ? task.priority : "Sin prioridad"}</span>
-        </Badge>
+      {/* Botón de eliminar */}
+      <button
+        className="absolute top-2 right-2 text-red-500 hover:text-red-700"
+        onClick={() => onDelete(id)}
+      >
+        <X size={16} />
+      </button>
 
+      <h4 className="font-bold dark:text-white">{task.title}</h4>
+      <p className="text-sm text-gray-600 dark:text-gray-300">{task.description}</p>
 
-          {task.tags && (
-            <div className="flex flex-wrap gap-1">
-              {task.tags.split(',').map((tag, index) => (
-                <Badge key={index} variant="outline">
-                  {tag.trim()}
-                </Badge>
-              ))}
-            </div>
-          )}
-        </div>
+      
+      <span
+        className={`text-xs px-2 py-1 rounded text-white ${
+          task.priority === "alta"
+            ? "bg-red-500"
+            : task.priority === "media"
+            ? "bg-yellow-500"
+            : "bg-green-500"
+        }`}
+      >
+        {task.priority}
+      </span>
 
-        <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
-          {task.startDate && (
-            <span>
-              Inicio: {formatDate(task.startDate)}
-            </span>
-          )}
-          {task.dueDate && (
-            <span>
-              Fin: {formatDate(task.dueDate)}
-            </span>
-          )}
-        </div>
-      </CardContent>
-    </Card>
+      {/* Fechas */}
+      <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400 mt-1">
+        <Calendar size={14} />
+        {task.startDate} - {task.dueDate}
+      </div>
+    </div>
   );
 }
-
-export default SortableItem;
 
