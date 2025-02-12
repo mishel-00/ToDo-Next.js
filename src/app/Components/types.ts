@@ -1,18 +1,25 @@
 
-export interface Task {
+export interface Attachment {
+    id: number;
+    fileUrl: string;
+    fileName: string;
+    taskId: number;
+  }
+  
+  export interface Task {
     id: number;
     title: string;
-    description: string;
-    status: string;
-    priority?: string | null;
-    tags?: string;
-    startDate?: Date | null;
-    dueDate?: Date | null;
+    description: string | null;
+    status: string | null;
+    priority: string | null;
+    tags: string | null;
+    startDate: Date | null;
+    dueDate: Date | null;
     projectId: number;
-    attachments?: Array<{ fileUrl: string }>;
+    attachments?: Attachment[];
   }
-export interface Project {
+  
+  export interface Project {
     id: number;
     name: string;
   }
-  
